@@ -36,7 +36,11 @@ class SamplePageViewController: UIPageViewController {
         control.addTarget(self, action: #selector(didTapControl(_:)), for: .touchUpInside)
         return control
     }()
+    
+    let nextButton = UIButton()
+    let backButton = UIButton()
 
+    // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +53,7 @@ class SamplePageViewController: UIPageViewController {
         setupPages()
         setupControl()
         setupBox()
+        setupHeader()
         dataSource = self
         delegate = self
     }
@@ -81,6 +86,33 @@ class SamplePageViewController: UIPageViewController {
         }
     }
     
+    func setupHeader() {
+        let header = UIView()
+        header.backgroundColor = .magenta
+        view.addSubview(header)
+        header.snp.makeConstraints { make in
+            make.width.centerX.top.equalToSuperview()
+            make.height.equalTo(80)
+        }
+        nextButton.addTarget(self, action: #selector(goToNextPage), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        nextButton.setTitle("Next", for: .normal)
+        backButton.setTitle("Back", for: .normal)
+        header.addSubview(nextButton)
+        header.addSubview(backButton)
+        nextButton.snp.makeConstraints { make in
+            make.trailing.height.top.equalToSuperview()
+            make.width.equalTo(60)
+        }
+        backButton.snp.makeConstraints{ make in
+            make.leading.height.top.equalToSuperview()
+            make.width.equalTo(60)
+        }
+        backButton.isHidden = true
+    }
+    
+    // MARK: Actions
+    
     @objc func didTapControl(_ control: UIPageControl) {
         setPage(pageIndex: control.currentPage)
     }
@@ -94,9 +126,36 @@ class SamplePageViewController: UIPageViewController {
             if self.pageControl.currentPage != pageIndex { self.pageControl.currentPage = pageIndex }
         })
     }
+    
+    @objc func goToNextPage() {
+        guard let current = viewControllers?.first, let currentIndex = pages.firstIndex(of: current) else {
+            return
+        }
+        setPage(pageIndex: currentIndex + 1)
+        if currentIndex + 2 >= pages.count {
+            nextButton.isHidden = true
+        } else {
+            nextButton.isHidden = false
+        }
+        backButton.isHidden = false
+        
+    }
+    
+    @objc func goBack() {
+        guard let current = viewControllers?.first, let currentIndex = pages.firstIndex(of: current) else {
+            return
+        }
+        setPage(pageIndex: currentIndex - 1)
+        if currentIndex - 1 <= 0 {
+            backButton.isHidden = true
+        } else {
+            backButton.isHidden = false
+        }
+        nextButton.isHidden = false
+    }
 
 }
-
+// MARK: - Extensions
 extension SamplePageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let previousIndex = pages.firstIndex(of: viewController), (previousIndex - 1) >= 0 else {
@@ -117,6 +176,16 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let current = viewControllers?.first, let index = pages.firstIndex(of: current) {
             pageControl.currentPage = index
+            if index == (pages.count - 1) {
+                nextButton.isHidden = true
+                return
+            }
+            if index == 0 {
+                backButton.isHidden = true
+                return
+            }
+            nextButton.isHidden = true
+            backButton.isHidden = false
         }
     }
 
@@ -125,8 +194,7 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
 
 extension SamplePageViewController: ButtonTapable {
     func didTapButton() {
-        let currentIndex = pageControl.currentPage
-        setPage(pageIndex: currentIndex + 1)
+        goToNextPage()
     }
 }
 
@@ -170,7 +238,33 @@ class SampleTextViewController: UIViewController {
             make.width.equalTo(200)
             
         }
+        let buttonHeight: CGFloat = 44
+        let contentInset: CGFloat = 8
         
+        //inset the textView
+        textView.textContainerInset = UIEdgeInsets(top: contentInset, left: contentInset, bottom: (buttonHeight+contentInset*2), right: contentInset)
+        
+        let button = UIButton()
+        //setup your button here
+        button.setTitle("BUTTON", for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.backgroundColor = UIColor.lightGray
+        button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
+        
+        //Add the button to the text view
+        textView.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(80)
+            make.height.equalTo(buttonHeight)
+            make.centerY.equalTo(textView.sizeThatFits(textView.frame.size).height)
+        }
+        
+        
+    }
+    
+    @objc func didTap() {
+        delegate?.didTapButton()
     }
     
 }
