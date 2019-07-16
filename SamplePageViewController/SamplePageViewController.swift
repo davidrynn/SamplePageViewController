@@ -40,9 +40,11 @@ class SamplePageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //attempting to add space above pages for potential header
         let newWidth = self.view.frame.width
         let newHeight = self.view.frame.height - 200
         view.frame = CGRect(x: 0, y: 200, width: newWidth, height: newHeight)
+        // end
         view.backgroundColor = .orange
         setupPages()
         setupControl()
