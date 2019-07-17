@@ -12,6 +12,7 @@
 		228D7BCF22DD170F00638EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228D7BCE22DD170F00638EAD /* Assets.xcassets */; };
 		228D7BD222DD170F00638EAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228D7BD022DD170F00638EAD /* LaunchScreen.storyboard */; };
 		228D7BDA22DD187E00638EAD /* SamplePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228D7BD922DD187E00638EAD /* SamplePageViewController.swift */; };
+		228E9FC322DE6AE6004F60CF /* SamplePageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228E9FC222DE6AE6004F60CF /* SamplePageInteractor.swift */; };
 		FD12B31EF33BA90F4F396EF1 /* Pods_SamplePageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1305429091A3805136944124 /* Pods_SamplePageViewController.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		228D7BD122DD170F00638EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		228D7BD322DD170F00638EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		228D7BD922DD187E00638EAD /* SamplePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplePageViewController.swift; sourceTree = "<group>"; };
+		228E9FC222DE6AE6004F60CF /* SamplePageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplePageInteractor.swift; sourceTree = "<group>"; };
 		85986F42B6B79BE1DBC324D5 /* Pods-SamplePageViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SamplePageViewController.debug.xcconfig"; path = "Target Support Files/Pods-SamplePageViewController/Pods-SamplePageViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		B2097572E6E8E832864D2DFA /* Pods-SamplePageViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SamplePageViewController.release.xcconfig"; path = "Target Support Files/Pods-SamplePageViewController/Pods-SamplePageViewController.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,6 +66,7 @@
 				228D7BC722DD170D00638EAD /* AppDelegate.swift */,
 				228D7BCB22DD170D00638EAD /* Main.storyboard */,
 				228D7BD922DD187E00638EAD /* SamplePageViewController.swift */,
+				228E9FC222DE6AE6004F60CF /* SamplePageInteractor.swift */,
 				228D7BCE22DD170F00638EAD /* Assets.xcassets */,
 				228D7BD022DD170F00638EAD /* LaunchScreen.storyboard */,
 				228D7BD322DD170F00638EAD /* Info.plist */,
@@ -205,6 +208,7 @@
 			files = (
 				228D7BC822DD170D00638EAD /* AppDelegate.swift in Sources */,
 				228D7BDA22DD187E00638EAD /* SamplePageViewController.swift in Sources */,
+				228E9FC322DE6AE6004F60CF /* SamplePageInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
