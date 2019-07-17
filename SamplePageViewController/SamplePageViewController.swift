@@ -9,12 +9,19 @@
 import UIKit
 import SnapKit
 
+protocol BackNextDelegate: class {
+    func hideNextButton()
+    func showNextButton()
+    func hideBackButton()
+    func showBackButton()
+}
+
 class SamplePageViewController: UIPageViewController {
     
     // MARK: Properties
     
     var interactor: SamplePageInteractor?
-
+    
     lazy var controller1: SampleViewController =  {
         let controller = SampleViewController()
         controller.view.backgroundColor = .green
@@ -43,10 +50,11 @@ class SamplePageViewController: UIPageViewController {
         }
     }
     
+    weak var backNextDelegate: BackNextDelegate?
+    
     var currentIndex: Int {
         get {
-            if let currentPage = viewControllers?.first as? ButtonTappableViewController,
-                let cIndex = pages.firstIndex(of: currentPage) {
+            if let currentPage = viewControllers?.first as? ButtonTappableViewController, let cIndex = pages.firstIndex(of: currentPage) {
                 return cIndex
             }
             return 0
@@ -67,7 +75,7 @@ class SamplePageViewController: UIPageViewController {
         self.pages = viewControllers
         pages.forEach { $0.delegate = self }
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -86,6 +94,7 @@ class SamplePageViewController: UIPageViewController {
         setupControl()
         setupBox()
         dataSource = self
+        delegate = self
     }
     
     func setupControl() {
@@ -124,7 +133,7 @@ class SamplePageViewController: UIPageViewController {
     }
     
     func setPage(pageIndex: Int) {
-        guard let currentController = viewControllers?.first as? ButtonTappableViewController, let currentIndex = pages.firstIndex(of: currentController), pageIndex < pages.count else { return }
+        guard pageIndex < pages.count else { return }
         if currentIndex == pageIndex { return }
         let direction: UIPageViewController.NavigationDirection = currentIndex < pageIndex ? .forward : .reverse
         let controller = pages[pageIndex]
@@ -134,19 +143,21 @@ class SamplePageViewController: UIPageViewController {
     }
     
     @objc func goToNextPage() {
-        guard let current = viewControllers?.first as? ButtonTappableViewController, let currentIndex = pages.firstIndex(of: current) else {
-            return
-        }
         setPage(pageIndex: currentIndex + 1)
+        if currentIndex == pages.count - 1 {
+            backNextDelegate?.hideNextButton()
+        }
+        backNextDelegate?.showBackButton()
     }
     
     @objc func goBack() {
-        guard let current = viewControllers?.first as? ButtonTappableViewController, let currentIndex = pages.firstIndex(of: current) else {
-            return
-        }
         setPage(pageIndex: currentIndex - 1)
+        if currentIndex == 0 {
+            backNextDelegate?.hideBackButton()
+        }
+        backNextDelegate?.showNextButton()
     }
-
+    
 }
 // MARK: - Extensions
 extension SamplePageViewController: UIPageViewControllerDataSource {
@@ -165,19 +176,54 @@ extension SamplePageViewController: UIPageViewControllerDataSource {
     }
 }
 
-extension SamplePageViewController: ButtonTapableDelegate {
+extension SamplePageViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        pageControl.currentPage = currentIndex
+
+        if currentIndex == (pages.count - 1) {
+            backNextDelegate?.hideNextButton()
+            backNextDelegate?.showBackButton()
+            return
+        }
+        if currentIndex == 0 {
+            backNextDelegate?.hideBackButton()
+            backNextDelegate?.showNextButton()
+            return
+        }
+        backNextDelegate?.showNextButton()
+        backNextDelegate?.showBackButton()
+    }
+    
+}
+
+extension SamplePageViewController: ButtonTapable {
     func didTapButton() {
         goToNextPage()
     }
 }
 
-protocol ButtonTapableDelegate: class {
+extension SamplePageViewController: PageContainerDelegate {
+    
+    func didTapNextButton() {
+        goToNextPage()
+    }
+    
+    func didTapBackButton() {
+        goBack()
+    }
+    
+}
+
+
+// MARK: - Sample SubClasses
+
+protocol ButtonTapable: class {
     func didTapButton()
 }
 
 class ButtonTappableViewController: UIViewController {
-    weak var delegate: ButtonTapableDelegate?
-
+    weak var delegate: ButtonTapable?
+    
     @objc func didTap() {
         delegate?.didTapButton()
     }
@@ -203,7 +249,7 @@ class SampleViewController: ButtonTappableViewController {
 }
 
 class SampleTextViewController: ButtonTappableViewController {
-
+    
     override func viewDidLoad() {
         let textView = UITextView()
         textView.isEditable = false
@@ -283,14 +329,3 @@ class SampleTextInputViewController: ButtonTappableViewController {
         present(alertVC, animated: true, completion: nil)
     }
 }
-
-extension SamplePageViewController: PageContainerDelegate {
-    func didTapNextButton() {
-        goToNextPage()
-    }
-    
-    func didTapBackButton() {
-        goBack()
-    }
-}
-

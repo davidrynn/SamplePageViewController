@@ -33,6 +33,7 @@ class SamplePageContainerViewController: UIViewController {
         self.pageController = SamplePageViewController(viewControllers: pages)
         self.delegate = self.pageController
         super.init(nibName: nil, bundle: nil)
+        pageController.backNextDelegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -44,7 +45,6 @@ class SamplePageContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addChild(pageController)
-        pageController.delegate = self
         view.addSubview(header)
         view.addSubview(pageController.view)
         setupConstraints()
@@ -94,42 +94,31 @@ class SamplePageContainerViewController: UIViewController {
     
     @objc func didTapNext() {
         delegate?.didTapNextButton()
-        if pageController.currentIndex + 2 >= pages.count {
-            nextButton.isHidden = true
-        } else {
-            nextButton.isHidden = false
-        }
-        backButton.isHidden = false
     }
     
     @objc func didTapBack() {
         delegate?.didTapBackButton()
-        if pageController.currentIndex - 1 <= 0 {
-            backButton.isHidden = true
-        } else {
-            backButton.isHidden = false
-        }
-        nextButton.isHidden = false
     }
     
 }
 
-extension SamplePageContainerViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        pageController.pageControl.currentPage = pageController.currentIndex
-        if pageController.currentIndex == (pages.count - 1) {
-            nextButton.isHidden = true
-            return
-        }
-        if pageController.currentIndex == 0 {
-            backButton.isHidden = true
-            return
-        }
-        nextButton.isHidden = true
-        backButton.isHidden = false
-        
+extension SamplePageContainerViewController: BackNextDelegate {
+
+    func showNextButton() {
+        nextButton.isHidden = false
     }
     
+    func hideNextButton() {
+        nextButton.isHidden = true
+    }
     
+    func showBackButton() {
+        backButton.isHidden = false
+    }
+    
+    func hideBackButton() {
+        backButton.isHidden = true
+    }
 }
+
+
