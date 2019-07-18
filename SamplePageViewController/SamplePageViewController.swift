@@ -25,26 +25,26 @@ class SamplePageViewController: UIPageViewController {
     
     lazy var controller1: SampleViewController =  {
         let controller = SampleViewController()
-        controller.view.backgroundColor = #colorLiteral(red: 0.937792182, green: 0.9379492402, blue: 0.9377716184, alpha: 1)
+        controller.view.backgroundColor = #colorLiteral(red: 0.9555206895, green: 0.9556805491, blue: 0.9554995894, alpha: 1)
         controller.delegate = self
         return controller
     }()
     lazy var controller2: SampleTextViewController = {
         let controller = SampleTextViewController()
         controller.delegate = self
-        controller.view.backgroundColor = #colorLiteral(red: 0.8979107738, green: 0.9543939233, blue: 0.9568721652, alpha: 1)
+        controller.view.backgroundColor = #colorLiteral(red: 0.8806003928, green: 0.9414284229, blue: 0.9402227402, alpha: 1)
         return controller
     }()
     lazy var controller3: SampleViewController =  {
         let controller = SampleViewController()
         controller.delegate = self
-        controller.view.backgroundColor = #colorLiteral(red: 0.937792182, green: 0.9379492402, blue: 0.9377716184, alpha: 1)
+        controller.view.backgroundColor = #colorLiteral(red: 0.9555206895, green: 0.9556805491, blue: 0.9554995894, alpha: 1)
         return controller
     }()
     lazy var controller4: SampleTextInputViewController = {
         let controller = SampleTextInputViewController()
         controller.delegate = self
-        controller.view.backgroundColor = #colorLiteral(red: 0.8979107738, green: 0.9543939233, blue: 0.9568721652, alpha: 1)
+        controller.view.backgroundColor = #colorLiteral(red: 0.8806003928, green: 0.9414284229, blue: 0.9402227402, alpha: 1)
         return controller
     }()
     
