@@ -20,7 +20,8 @@ class SamplePageContainerViewController: UIViewController {
     
     private let pageController: SamplePageViewController
     private let pages: [ButtonTappableViewController]
-    private let header = UIView()
+    private let header = ProgressBarView()
+    private lazy var progrss = Progress(totalUnitCount: Int64(pageController.pages.count))
     private let nextButton = UIButton()
     private let backButton = UIButton()
     
@@ -47,38 +48,48 @@ class SamplePageContainerViewController: UIViewController {
         addChild(pageController)
         view.addSubview(header)
         view.addSubview(pageController.view)
-        setupConstraints()
+        setupHeader()
+        setupPageConstraints()
+        updateProgress()
     }
     
     // MARK: Setups
     
-    func setupConstraints() {
+    func setupHeader() {
         setupHeaderConstraints()
-        setupPageConstraints()
+        setupHeaderButtons()
+        header.layer.shadowColor = UIColor.black.cgColor
+        header.layer.shadowOpacity = 1.0
+        header.layer.shadowOffset = .zero
+        header.layer.shadowRadius = 10
+        header.layer.shadowPath = UIBezierPath(rect: header.bounds).cgPath
+        view.bringSubviewToFront(header)
     }
     
     func setupHeaderConstraints() {
         header.snp.makeConstraints { make in
             make.centerX.width.top.equalToSuperview()
-            make.height.equalTo(80)
+            make.height.equalTo(100)
         }
-        setupHeader()
     }
     
-    func setupHeader() {
-        header.backgroundColor = .magenta
+    func setupHeaderButtons() {
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         nextButton.setTitle("Next", for: .normal)
         backButton.setTitle("Back", for: .normal)
+        nextButton.setTitleColor(.red, for: .normal)
+        backButton.setTitleColor(.red, for: .normal)
         header.addSubview(nextButton)
         header.addSubview(backButton)
         nextButton.snp.makeConstraints { make in
-            make.trailing.height.top.equalToSuperview()
+            make.trailing.height.equalToSuperview()
+            make.bottom.equalToSuperview().offset(10)
             make.width.equalTo(60)
         }
         backButton.snp.makeConstraints{ make in
-            make.leading.height.top.equalToSuperview()
+            make.leading.height.equalToSuperview()
+            make.bottom.equalToSuperview().offset(10)
             make.width.equalTo(60)
         }
         backButton.isHidden = true
@@ -103,6 +114,10 @@ class SamplePageContainerViewController: UIViewController {
 }
 
 extension SamplePageContainerViewController: BackNextDelegate {
+    func updateProgress() {
+        progrss.completedUnitCount = Int64(pageController.currentIndex + 1)
+        header.progressBar.setProgress(Float(progrss.fractionCompleted), animated: true)
+    }
 
     func showNextButton() {
         nextButton.isHidden = false
