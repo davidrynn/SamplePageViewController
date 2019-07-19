@@ -28,7 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let listener = SamplePageInteractor()
         let root = SamplePageContainerViewController([controller1, controller2, controller3, controller4], listener: listener)
         listener.presenter = root
-        window?.rootViewController = root
+        let rootNav = UINavigationController(rootViewController: root)
+        rootNav.setNavigationBarHidden(true, animated: false)
+        window?.rootViewController = rootNav
         window?.makeKeyAndVisible()
         return true
     }

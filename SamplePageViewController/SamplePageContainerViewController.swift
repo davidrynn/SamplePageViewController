@@ -154,7 +154,10 @@ extension SamplePageContainerViewController: SamplePresenter {
     func callCompleted(responseData: String) {
         let alertVC = UIAlertController(title: "Complete",
                                         message: "Congratulations \(responseData), you have finished.", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in
+            let main = MainViewController()
+            self.navigationController?.pushViewController(main, animated: true)
+        })
         alertVC.addAction(action)
         present(alertVC, animated: true, completion: nil)
     }

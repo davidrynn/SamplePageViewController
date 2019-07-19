@@ -78,15 +78,19 @@ class SampleTextViewController: ButtonTappableViewController {
     
 }
 
-class SampleTextInputViewController: ButtonTappableViewController {
+class SampleTextInputViewController: ButtonTappableViewController, UITextFieldDelegate {
 
     let firstNameField = UITextField()
     let lastNameField = UITextField()
     
     let doneButton = CTAButton()
-    
+    var didEditFirstName = false
+    var didEditLastName = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        firstNameField.delegate = self
+        lastNameField.delegate = self
+        doneButton.isEnabled = false
         view.addSubview(firstNameField)
         view.addSubview(lastNameField)
         view.addSubview(doneButton)
@@ -111,6 +115,7 @@ class SampleTextInputViewController: ButtonTappableViewController {
         doneButton.setTitle("DONE", for: .normal)
         doneButton.backgroundColor = .white
         doneButton.setTitleColor(.black, for: .normal)
+        doneButton.setTitleColor(.gray, for: .disabled)
         doneButton.addTarget(self, action: #selector(didTap(sender:)), for: .touchUpInside)
     }
     
@@ -121,6 +126,20 @@ class SampleTextInputViewController: ButtonTappableViewController {
             delegate?.didTapButton(sender: sender)
         }
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField === firstNameField {
+            didEditFirstName = true
+        }
+        else {
+            didEditLastName = true
+        }
+        if didEditLastName && didEditFirstName {
+            doneButton.isEnabled = true
+        }
+    }
+    
+    
 }
 
 class CTAButton: UIButton {

@@ -18,7 +18,7 @@ class SamplePageInteractor: SamplePageListener {
     
     func didTapCTA(data: String) {
         //network code here, mocking network call delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             self.presenter?.callCompleted(responseData: data)
         }
     }
