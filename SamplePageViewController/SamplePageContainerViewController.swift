@@ -14,6 +14,10 @@ protocol PageContainerDelegate: class {
     func didTapBackButton()
 }
 
+protocol SamplePageListener: class {
+    func didTapCTA(data: String)
+}
+
 class SamplePageContainerViewController: UIViewController {
     
     // MARK: Properties
@@ -24,15 +28,17 @@ class SamplePageContainerViewController: UIViewController {
     private lazy var progrss = Progress(totalUnitCount: Int64(pageController.pages.count))
     private let nextButton = UIButton()
     private let backButton = UIButton()
+    private let listener: SamplePageListener
     
     weak var delegate: PageContainerDelegate?
     
     // MARK: Initialization
     
-    init(_ pages: [ButtonTappableViewController]) {
+    init(_ pages: [ButtonTappableViewController], listener: SamplePageListener) {
         self.pages = pages
         self.pageController = SamplePageViewController(viewControllers: pages)
         self.delegate = self.pageController
+        self.listener = listener
         super.init(nibName: nil, bundle: nil)
         pageController.backNextDelegate = self
     }
@@ -137,6 +143,20 @@ extension SamplePageContainerViewController: BackNextDelegate {
     
     func hideBackButton() {
         backButton.isHidden = true
+    }
+    
+    func ctaTapped(data: String) {
+        listener.didTapCTA(data: data)
+    }
+}
+
+extension SamplePageContainerViewController: SamplePresenter {
+    func callCompleted(responseData: String) {
+        let alertVC = UIAlertController(title: "Complete",
+                                        message: "Congratulations \(responseData), you have finished.", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertVC.addAction(action)
+        present(alertVC, animated: true, completion: nil)
     }
 }
 

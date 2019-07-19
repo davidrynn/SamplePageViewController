@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 
 protocol ButtonTapable: class {
-    func didTapButton()
+    func didTapButton(sender: UIButton)
 }
 
 class ButtonTappableViewController: UIViewController {
     weak var delegate: ButtonTapable?
     
-    @objc func didTap() {
-        delegate?.didTapButton()
+    @objc func didTap(sender: UIButton) {
+        delegate?.didTapButton(sender: sender)
     }
     
 }
@@ -79,10 +79,11 @@ class SampleTextViewController: ButtonTappableViewController {
 }
 
 class SampleTextInputViewController: ButtonTappableViewController {
+
     let firstNameField = UITextField()
     let lastNameField = UITextField()
     
-    let doneButton = UIButton()
+    let doneButton = CTAButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,14 +111,19 @@ class SampleTextInputViewController: ButtonTappableViewController {
         doneButton.setTitle("DONE", for: .normal)
         doneButton.backgroundColor = .white
         doneButton.setTitleColor(.black, for: .normal)
-        doneButton.addTarget(self, action: #selector(didTap), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(didTap(sender:)), for: .touchUpInside)
     }
     
-    override func didTap() {
-        let alertVC = UIAlertController(title: "Complete",
-                                        message: "Congratulations, you have finished.", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertVC.addAction(action)
-        present(alertVC, animated: true, completion: nil)
+    override func didTap(sender: UIButton) {
+        if let button = sender as? CTAButton {
+            //wonky
+            button.names = "\(firstNameField.text ?? "Nil") \(lastNameField.text ?? "Nil")"
+            delegate?.didTapButton(sender: sender)
+        }
     }
+}
+
+class CTAButton: UIButton {
+    var names = ""
+    
 }

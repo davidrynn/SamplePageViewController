@@ -8,6 +8,18 @@
 
 import Foundation
 
-struct SamplePageInteractor {
+protocol SamplePresenter: class {
+    func callCompleted(responseData: String)
+}
+
+class SamplePageInteractor: SamplePageListener {
     
+    weak var presenter: SamplePresenter?
+    
+    func didTapCTA(data: String) {
+        //network code here, mocking network call delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+            self.presenter?.callCompleted(responseData: data)
+        }
+    }
 }

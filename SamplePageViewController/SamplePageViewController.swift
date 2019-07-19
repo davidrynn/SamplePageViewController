@@ -15,19 +15,14 @@ protocol BackNextDelegate: class {
     func hideBackButton()
     func showBackButton()
     func updateProgress()
+    func ctaTapped(data: String)
 }
 
 class SamplePageViewController: UIPageViewController {
     
     // MARK: Properties
     
-    var interactor: SamplePageInteractor?
-    
-    var pages: [ButtonTappableViewController] = [] {
-        didSet {
-            pageControl.numberOfPages = pages.count
-        }
-    }
+    var pages: [ButtonTappableViewController] = []
     
     weak var backNextDelegate: BackNextDelegate?
     
@@ -52,6 +47,7 @@ class SamplePageViewController: UIPageViewController {
     init(viewControllers: [ButtonTappableViewController]) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pages = viewControllers
+        pageControl.numberOfPages = viewControllers.count
         pages.forEach { $0.delegate = self }
     }
     
@@ -175,7 +171,10 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
 }
 
 extension SamplePageViewController: ButtonTapable {
-    func didTapButton() {
+    func didTapButton(sender: UIButton) {
+        if let button = sender as? CTAButton {
+            backNextDelegate?.ctaTapped(data: button.names)
+        }
         goToNextPage()
     }
 }
@@ -191,4 +190,3 @@ extension SamplePageViewController: PageContainerDelegate {
     }
     
 }
-
