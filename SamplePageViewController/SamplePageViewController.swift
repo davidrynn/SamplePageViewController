@@ -117,19 +117,29 @@ class SamplePageViewController: UIPageViewController {
     
     @objc func goToNextPage() {
         setPage(pageIndex: currentIndex + 1)
+        showHideNextButton()
+    }
+    
+    @objc func goBack() {
+        setPage(pageIndex: currentIndex - 1)
+        showHideBackButton()
+        
+    }
+    
+    func showHideBackButton() {
+        if currentIndex == 0 {
+            backNextDelegate?.hideBackButton()
+        }
+        backNextDelegate?.showNextButton()
+    }
+    
+    func showHideNextButton() {
         if currentIndex == pages.count - 1 {
             backNextDelegate?.hideNextButton()
         }
         backNextDelegate?.showBackButton()
     }
     
-    @objc func goBack() {
-        setPage(pageIndex: currentIndex - 1)
-        if currentIndex == 0 {
-            backNextDelegate?.hideBackButton()
-        }
-        backNextDelegate?.showNextButton()
-    }
     
 }
 // MARK: - Extensions
@@ -158,18 +168,8 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         pageControl.currentPage = currentIndex
         backNextDelegate?.updateProgress()
-        if currentIndex == (pages.count - 1) {
-            backNextDelegate?.hideNextButton()
-            backNextDelegate?.showBackButton()
-            return
-        }
-        if currentIndex == 0 {
-            backNextDelegate?.hideBackButton()
-            backNextDelegate?.showNextButton()
-            return
-        }
-        backNextDelegate?.showNextButton()
-        backNextDelegate?.showBackButton()
+        showHideNextButton()
+        showHideBackButton()
     }
     
 }
