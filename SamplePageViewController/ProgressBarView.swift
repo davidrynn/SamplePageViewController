@@ -31,7 +31,7 @@ class ProgressBarView: UIView {
             make.width.equalToSuperview()
             make.height.equalTo(4)
         }
-        progressBar.trackTintColor = .gray
+        progressBar.trackTintColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         progressBar.progressTintColor = .blue
         
         let logo = UIImageView(image: #imageLiteral(resourceName: "yourCompanyLogo"))

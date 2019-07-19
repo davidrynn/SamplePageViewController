@@ -16,7 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = SamplePageContainerViewController([])
+        let controller1 = SampleViewController()
+        controller1.view.backgroundColor = #colorLiteral(red: 0.9555206895, green: 0.9556805491, blue: 0.9554995894, alpha: 1)
+        let controller2 = SampleTextViewController()
+        controller2.view.backgroundColor = #colorLiteral(red: 0.8806003928, green: 0.9414284229, blue: 0.9402227402, alpha: 1)
+        let controller3 = SampleViewController()
+        controller3.view.backgroundColor = #colorLiteral(red: 0.9555206895, green: 0.9556805491, blue: 0.9554995894, alpha: 1)
+        let controller4 = SampleTextInputViewController()
+        controller4.view.backgroundColor = #colorLiteral(red: 0.8806003928, green: 0.9414284229, blue: 0.9402227402, alpha: 1)
+        window?.rootViewController = SamplePageContainerViewController([controller1, controller2, controller3, controller4])
         window?.makeKeyAndVisible()
         return true
     }

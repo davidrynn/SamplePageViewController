@@ -53,16 +53,20 @@ class SamplePageContainerViewController: UIViewController {
         updateProgress()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        header.layer.masksToBounds = false
+        header.layer.shadowColor = UIColor.black.cgColor
+        header.layer.shadowOpacity = 0.5
+        header.layer.shadowRadius = 5
+        header.layer.shadowPath = UIBezierPath(rect: header.bounds).cgPath
+    }
     // MARK: Setups
     
     func setupHeader() {
         setupHeaderConstraints()
         setupHeaderButtons()
-        header.layer.shadowColor = UIColor.black.cgColor
-        header.layer.shadowOpacity = 1.0
-        header.layer.shadowOffset = .zero
-        header.layer.shadowRadius = 10
-        header.layer.shadowPath = UIBezierPath(rect: header.bounds).cgPath
+
         view.bringSubviewToFront(header)
     }
     
