@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-protocol BackNextDelegate: class {
+protocol SamplePageControllerDelegate: class {
     func hideNextButton()
     func showNextButton()
     func hideBackButton()
@@ -24,7 +24,7 @@ class SamplePageViewController: UIPageViewController {
     
     var pages: [ButtonTappableViewController] = []
     
-    weak var backNextDelegate: BackNextDelegate?
+    weak var pageDelegate: SamplePageControllerDelegate?
     
     var currentIndex: Int {
         get {
@@ -35,7 +35,7 @@ class SamplePageViewController: UIPageViewController {
         }
     }
     
-    let pageControl: UIPageControl = {
+    lazy var pageControl: UIPageControl = {
         let control = UIPageControl()
         control.currentPageIndicatorTintColor = .black
         control.pageIndicatorTintColor = .gray
@@ -108,7 +108,7 @@ class SamplePageViewController: UIPageViewController {
         self.setViewControllers([controller], direction: direction, animated: true, completion: { _ in
             if self.pageControl.currentPage != pageIndex { self.pageControl.currentPage = pageIndex }
         })
-        backNextDelegate?.updateProgress()
+        pageDelegate?.updateProgress()
     }
     
     @objc func goToNextPage() {
@@ -124,16 +124,16 @@ class SamplePageViewController: UIPageViewController {
     
     func showHideBackButton() {
         if currentIndex == 0 {
-            backNextDelegate?.hideBackButton()
+            pageDelegate?.hideBackButton()
         }
-        backNextDelegate?.showNextButton()
+        pageDelegate?.showNextButton()
     }
     
     func showHideNextButton() {
         if currentIndex == pages.count - 1 {
-            backNextDelegate?.hideNextButton()
+            pageDelegate?.hideNextButton()
         }
-        backNextDelegate?.showBackButton()
+        pageDelegate?.showBackButton()
     }
     
     
@@ -159,7 +159,7 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         pageControl.currentPage = currentIndex
-        backNextDelegate?.updateProgress()
+        pageDelegate?.updateProgress()
         showHideNextButton()
         showHideBackButton()
     }
@@ -169,7 +169,7 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
 extension SamplePageViewController: ButtonTapable {
     func didTapButton(sender: UIButton) {
         if let button = sender as? CTAButton {
-            backNextDelegate?.ctaTapped(data: button.names)
+            pageDelegate?.ctaTapped(data: button.names)
         }
         goToNextPage()
     }

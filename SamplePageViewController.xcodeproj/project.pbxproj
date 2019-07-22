@@ -71,10 +71,10 @@
 			children = (
 				228D7BC722DD170D00638EAD /* AppDelegate.swift */,
 				228D7BD922DD187E00638EAD /* SamplePageViewController.swift */,
+				22EA4A6F22DFACCA0093F018 /* SamplePageContainerViewController.swift */,
 				22EA4A7322E21E6B0093F018 /* SamplePages.swift */,
 				22EA4A7522E27A2A0093F018 /* MainViewController.swift */,
 				22EA4A7122E0CF830093F018 /* ProgressBarView.swift */,
-				22EA4A6F22DFACCA0093F018 /* SamplePageContainerViewController.swift */,
 				228E9FC222DE6AE6004F60CF /* SamplePageInteractor.swift */,
 				228D7BCE22DD170F00638EAD /* Assets.xcassets */,
 				228D7BD022DD170F00638EAD /* LaunchScreen.storyboard */,
