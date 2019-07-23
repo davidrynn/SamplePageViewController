@@ -166,7 +166,7 @@ extension SamplePageViewController: UIPageViewControllerDelegate {
     
 }
 
-extension SamplePageViewController: ButtonTapable {
+extension SamplePageViewController: CallToActionable {
     func didTapButton(sender: UIButton) {
         if let button = sender as? CTAButton {
             pageDelegate?.ctaTapped(data: button.names)

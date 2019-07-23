@@ -9,12 +9,12 @@
 import UIKit
 import SnapKit
 
-protocol ButtonTapable: class {
+protocol CallToActionable where Self: UIViewController{
     func didTapButton(sender: UIButton)
 }
 
 class ButtonTappableViewController: UIViewController {
-    weak var delegate: ButtonTapable?
+    weak var delegate: CallToActionable?
     
     @objc func didTap(sender: UIButton) {
         delegate?.didTapButton(sender: sender)
